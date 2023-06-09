@@ -122,6 +122,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\PluginConfig.cs" />
     <Compile Include="Installers\PauseMusicGameInstaller.cs" />
     <Compile Include="Managers\PauseAudioManager.cs" />
     <Compile Include="Plugin.cs" />

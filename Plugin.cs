@@ -1,6 +1,7 @@
 ﻿using IPA;
 using IPA.Config;
 using IPA.Config.Stores;
+using PauseMusic.Configuration;
 using PauseMusic.Installers;
 using SiraUtil.Zenject;
 using System;
@@ -21,10 +22,11 @@ namespace PauseMusic
 		internal static IPALogger Log { get; private set; }
 
 		[Init]
-		public Plugin(IPALogger logger, Zenjector zenjector)
+		public Plugin(IPALogger logger, Config conf, Zenjector zenjector)
 		{
 			Instance = this;
-			Plugin.Log = logger;
+			Log = logger;
+			PluginConfig.Instance = GeneratedStore.Generated<PluginConfig>(conf, true);
 
 			zenjector.Install<PauseMusicGameInstaller>(Location.StandardPlayer);
 		}

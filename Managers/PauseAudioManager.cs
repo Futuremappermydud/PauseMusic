@@ -1,4 +1,5 @@
 ﻿using IPA.Utilities;
+using PauseMusic.Configuration;
 using PauseMusic.Services;
 using System;
 using System.Collections;
@@ -36,7 +37,7 @@ namespace PauseMusic.Managers
 		{
 			while (Mathf.Abs(_audioSource.volume - to) > 0.05f) 
 			{
-				_audioSource.volume = Mathf.Lerp(_audioSource.volume, to, Time.deltaTime * 3f);
+				_audioSource.volume = Mathf.Lerp(_audioSource.volume, to, Time.deltaTime * PluginConfig.Instance.fadeSpeed);
 				yield return new WaitForEndOfFrame();
 			}
 			if(stop)
@@ -50,13 +51,17 @@ namespace PauseMusic.Managers
 				return;
 			_audioSource.clip = clip;
 			_audioSource.Play();
-			StartCoroutine(Fade(1f));
+			StopAllCoroutines();
+			StartCoroutine(Fade(PluginConfig.Instance.audioVolume));
 		}
 
 		private void Resume()
 		{
 			if (_audioSource != null)
+			{
+				StopAllCoroutines();
 				StartCoroutine(Fade(0f, true));
+			}
 		}
 	}
 }
