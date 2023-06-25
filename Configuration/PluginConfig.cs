@@ -31,5 +31,11 @@ namespace PauseMusic.Configuration
 			get;
 			set;
 		} = 1f;
+
+		public virtual string selectedAudioFile
+		{
+			get;
+			set;
+		} = "";
 	}
 }

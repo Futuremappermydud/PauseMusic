@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PauseMusic.Configuration;
 using UnityEngine;
 using UnityEngine.Networking;
 using Zenject;
@@ -13,7 +14,7 @@ namespace PauseMusic.Services
 	internal class AudioLoaderService : IInitializable
 	{
 		private AudioClip currentClip = null;
-		private string path => Path.Combine(IPA.Utilities.UnityGame.UserDataPath, "PauseMusic.ogg");
+		private string path => Path.Combine(IPA.Utilities.UnityGame.UserDataPath, "PauseMusic", PluginConfig.Instance.selectedAudioFile + ".ogg");
 		public void Initialize()
 		{
 			var watcher = new FileSystemWatcher(Path.GetDirectoryName(path));
@@ -44,7 +45,11 @@ namespace PauseMusic.Services
 			{
 				UnityEngine.Object.Destroy(currentClip);
 			}
-			UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip("file:///" + path, AudioType.OGGVORBIS);
+			if (!File.Exists(path))
+			{
+				return;
+			}
+			var www = UnityWebRequestMultimedia.GetAudioClip("file:///" + path, AudioType.OGGVORBIS);
 			{
 				var webreq = www.SendWebRequest();
 				webreq.completed += (op) => {
@@ -56,12 +61,9 @@ namespace PauseMusic.Services
 
 		public AudioClip GetCurrentClip()
 		{
-			if(!currentClip)
-			{
-				Plugin.Log.Warn("No Pause Music Clip Found. Ignoring");
-				return null;
-			}
-			return currentClip;
+			if (currentClip) return currentClip;
+			Plugin.Log.Warn("No Pause Music Clip Found. Ignoring");
+			return null;
 		}
 	}
 }

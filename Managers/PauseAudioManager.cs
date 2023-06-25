@@ -46,7 +46,7 @@ namespace PauseMusic.Managers
 
 		private void Pause()
 		{
-			AudioClip clip = _audioLoaderService.GetCurrentClip();
+			var clip = _audioLoaderService.GetCurrentClip();
 			if (_audioSource == null || clip == null) 
 				return;
 			_audioSource.clip = clip;
@@ -57,11 +57,9 @@ namespace PauseMusic.Managers
 
 		private void Resume()
 		{
-			if (_audioSource != null)
-			{
-				StopAllCoroutines();
-				StartCoroutine(Fade(0f, true));
-			}
+			if (_audioSource == null) return;
+			StopAllCoroutines();
+			StartCoroutine(Fade(0f, true));
 		}
 	}
 }

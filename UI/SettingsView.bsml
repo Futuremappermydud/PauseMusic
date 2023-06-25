@@ -1,0 +1,15 @@
+﻿<bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'
+    background='round-rect-panel'
+    bg-color='#FFFFFF8c'
+    size-delta-x='-70'
+    size-delta-y='-30'
+>
+  <vertical vertical-fit="PreferredSize" spacing="1">
+    <toggle-setting text='Enabled' apply-on-change='true' value='enabled' bind-value='true' preferred-width="70"></toggle-setting>
+    <slider-setting text='Fade Speed' value='fade-speed' bind-value='true' apply-on-change='true' preferred-width="70" min="0.5" max="7"/>
+    <slider-setting text='Volume' value='volume' bind-value='true' apply-on-change='true' preferred-width="70" min="0" max="1"/>
+    <dropdown-list-setting id="dropdown_audio" text='Audio File' value='audio-file' choices='available-files' bind-value='true' apply-on-change='true' preferred-width="70"/>
+    <text text='~FutureMessage' font-size="3.5" align="Top" rich-text="true"/>
+  </vertical>
+</bg>

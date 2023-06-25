@@ -29,6 +29,7 @@ namespace PauseMusic
 			PluginConfig.Instance = GeneratedStore.Generated<PluginConfig>(conf, true);
 
 			zenjector.Install<PauseMusicGameInstaller>(Location.StandardPlayer);
+			zenjector.Install<PauseMusicMenuInstaller>(Location.Menu);
 		}
 	}
 }
