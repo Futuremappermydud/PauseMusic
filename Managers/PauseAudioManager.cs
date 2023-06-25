@@ -46,6 +46,7 @@ namespace PauseMusic.Managers
 
 		private void Pause()
 		{
+			if(!PluginConfig.Instance.enabled) return;
 			var clip = _audioLoaderService.GetCurrentClip();
 			if (_audioSource == null || clip == null) 
 				return;
@@ -57,6 +58,7 @@ namespace PauseMusic.Managers
 
 		private void Resume()
 		{
+			if (!PluginConfig.Instance.enabled) return;
 			if (_audioSource == null) return;
 			StopAllCoroutines();
 			StartCoroutine(Fade(0f, true));
