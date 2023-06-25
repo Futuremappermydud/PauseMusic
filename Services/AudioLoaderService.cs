@@ -13,47 +13,30 @@ namespace PauseMusic.Services
 {
 	internal class AudioLoaderService : IInitializable
 	{
-		private AudioClip currentClip = null;
-		private string path => Path.Combine(IPA.Utilities.UnityGame.UserDataPath, "PauseMusic", PluginConfig.Instance.selectedAudioFile + ".ogg");
+		private AudioClip _currentClip = null;
+		private static string Path => System.IO.Path.Combine(IPA.Utilities.UnityGame.UserDataPath, "PauseMusic", PluginConfig.Instance.selectedAudioFile + ".ogg");
+
 		public void Initialize()
 		{
-			var watcher = new FileSystemWatcher(Path.GetDirectoryName(path));
 
-			watcher.NotifyFilter = NotifyFilters.LastWrite;
-
-			watcher.Changed += OnChanged;
-			watcher.Created += OnChanged;
-
-			watcher.Filter = "PauseMusic.ogg";
-			watcher.EnableRaisingEvents = true;
-
-			LoadAudioClip();
-		}
-
-		private void OnChanged(object sender, FileSystemEventArgs e)
-		{
-			if (e.ChangeType != WatcherChangeTypes.Changed)
-			{
-				return;
-			}
 			LoadAudioClip();
 		}
 
 		private void LoadAudioClip()
 		{
-			if (currentClip != null)
+			if (_currentClip != null)
 			{
-				UnityEngine.Object.Destroy(currentClip);
+				UnityEngine.Object.Destroy(_currentClip);
 			}
-			if (!File.Exists(path))
+			if (!File.Exists(Path))
 			{
 				return;
 			}
-			var www = UnityWebRequestMultimedia.GetAudioClip("file:///" + path, AudioType.OGGVORBIS);
+			var www = UnityWebRequestMultimedia.GetAudioClip("file:///" + Path, AudioType.OGGVORBIS);
 			{
 				var webreq = www.SendWebRequest();
 				webreq.completed += (op) => {
-					currentClip = DownloadHandlerAudioClip.GetContent(www);
+					_currentClip = DownloadHandlerAudioClip.GetContent(www);
 					www.Dispose();
 				};
 			}
@@ -61,7 +44,7 @@ namespace PauseMusic.Services
 
 		public AudioClip GetCurrentClip()
 		{
-			if (currentClip) return currentClip;
+			if (_currentClip) return _currentClip;
 			Plugin.Log.Warn("No Pause Music Clip Found. Ignoring");
 			return null;
 		}
